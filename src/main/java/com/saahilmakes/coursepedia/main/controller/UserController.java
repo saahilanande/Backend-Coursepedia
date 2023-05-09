@@ -4,6 +4,8 @@ package com.saahilmakes.coursepedia.main.controller;
 import com.saahilmakes.coursepedia.main.model.UserModel;
 import com.saahilmakes.coursepedia.main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,17 +22,15 @@ public class UserController {
 
     //Endpoint to get all the users
     @GetMapping("")
-    public List<UserModel> getAllUser() {
-        List<UserModel> userList = userInterface.findAll();
-        return userList;
-    }
+    public List<UserModel> getAllUser(@RequestParam(value = "id", required = false) String userId) {
 
-    //Endpoint to get a single user
-    @GetMapping("/getuserbyId")
-    public Optional<UserModel> getUserById(@RequestParam(value = "id",required = false) long userId) {
-
-        Optional<UserModel> user = userInterface.findById(userId);
-        return user;
+        if (userId == null) {
+            List<UserModel> userList = userInterface.findAll();
+            return userList;
+        } else {
+            List<UserModel> userList = userInterface.findByQueryId(userId);
+            return userList;
+        }
     }
 
     //Endpoint to Add a user to collection
