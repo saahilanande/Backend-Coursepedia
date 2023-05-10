@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.awt.*;
 import java.util.List;
 
-public interface UserRepo extends MongoRepository<UserModel, Long> {
+public interface UserRepo extends MongoRepository<UserModel, String> {
 
     @Query("{ 'id': ?0}")
     List<UserModel> findByQueryId(String id);

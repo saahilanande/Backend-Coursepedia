@@ -4,6 +4,7 @@ package com.saahilmakes.coursepedia.main.controller;
 import com.saahilmakes.coursepedia.main.model.UserModel;
 import com.saahilmakes.coursepedia.main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,28 +48,43 @@ public class UserController {
     }
 
     //Endpoint to Validate a user and assign token
-    @PostMapping("/validateUser/{email}/{password}")
+    @GetMapping("/validateUser/{email}/{password}")
     public String validateUser(@PathVariable("email") String email, @PathVariable("password") String password) {
 
-          UserModel validUser = userInterface.validateUser(email,password);
-          if(validUser == null){
+        UserModel validUser = userInterface.validateUser(email, password);
+        if (validUser == null) {
             return "User is invalid";
-          }
-          else {
-              return "User is Valid";
-          }
+        } else {
+            return "User is Valid";
+        }
     }
 
     //Endpoint to update a particular user
     @PutMapping("/updateuser/{userId}")
-    public String updateUser(@PathVariable("userId") String userId) {
+    public String updateUser(@PathVariable("userId") String userId, @RequestBody UserModel user) {
+        try{
+            UserModel updateuser = new UserModel();
+            updateuser.setId(userId);
+            updateuser.setName(user.getName());
+            userInterface.save(updateuser);
+        }
+        catch (Exception ex){
+
+        }
         return "User updated";
     }
 
     //Endpoint to Delete a particular user
     @DeleteMapping("/delete/{userId}")
     public String deleteUser(@PathVariable("userId") String userId) {
-        return "Delete user by" + userId;
+        try {
+            userInterface.deleteById(userId);
+            return "Deleted a user with UserId:" + userId;
+        } catch (Exception ex) {
+            return "Error: "+ex;
+        }
+
+
     }
 
 }

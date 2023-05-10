@@ -3,11 +3,13 @@ package com.saahilmakes.coursepedia.main.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "User")
 public class UserModel {
 
     @Id
+    @Field("_id")
     private String id;
 
     public String getId() {
