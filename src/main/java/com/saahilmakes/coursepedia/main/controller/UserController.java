@@ -4,13 +4,10 @@ package com.saahilmakes.coursepedia.main.controller;
 import com.saahilmakes.coursepedia.main.model.UserModel;
 import com.saahilmakes.coursepedia.main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -50,9 +47,16 @@ public class UserController {
     }
 
     //Endpoint to Validate a user and assign token
-    @PostMapping("/validateUser/{username}/{password}")
-    public String validateUser(@PathVariable("username") String username, @PathVariable("password") String password) {
-        return "User is valid";
+    @PostMapping("/validateUser/{email}/{password}")
+    public String validateUser(@PathVariable("email") String email, @PathVariable("password") String password) {
+
+          UserModel validUser = userInterface.validateUser(email,password);
+          if(validUser == null){
+            return "User is invalid";
+          }
+          else {
+              return "User is Valid";
+          }
     }
 
     //Endpoint to update a particular user

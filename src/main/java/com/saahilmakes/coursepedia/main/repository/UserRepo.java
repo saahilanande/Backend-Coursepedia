@@ -12,4 +12,8 @@ public interface UserRepo extends MongoRepository<UserModel, Long> {
     @Query("{ 'id': ?0}")
     List<UserModel> findByQueryId(String id);
 
+    @Query("{ 'email': ?0, 'password':?1}")
+    UserModel validateUser(String email, String password);
+
+
 }
