@@ -3,10 +3,9 @@ package com.saahilmakes.coursepedia.main.controller;
 import com.saahilmakes.coursepedia.main.model.CourseModel;
 import com.saahilmakes.coursepedia.main.repository.CourseRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/course")
@@ -31,5 +30,23 @@ public class CourseController {
         courseInterface.insert(newCourse);
 
         return newCourse;
+    }
+
+    //Endpoint to get All courses
+    @GetMapping("")
+    public List<CourseModel> getAllproducts() {
+        List<CourseModel> courses = courseInterface.findAll();
+        return courses;
+    }
+
+    //Endpoint to Delete a course
+    @GetMapping("/delete/{id}")
+    public String deletecourse(@PathVariable("id") String id) {
+        try {
+            courseInterface.deleteById(id);
+            return "Course deleted Succesfully with ID" + id;
+        } catch (Exception ex) {
+            return "" + ex;
+        }
     }
 }
