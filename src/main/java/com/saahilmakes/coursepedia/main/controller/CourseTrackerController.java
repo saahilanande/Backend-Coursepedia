@@ -36,4 +36,16 @@ public class CourseTrackerController {
         }
     }
 
+    //Delete a tracked course
+    @DeleteMapping("/delete/{id}")
+    public String deleteTrackerCourse(@PathVariable("id") String id){
+        try{
+            trackerInterface.deleteById(id);
+            return "Item deleted with id"+id;
+        }
+        catch (Exception ex){
+            return ""+ex;
+        }
+    }
+
 }
