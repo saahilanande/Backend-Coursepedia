@@ -4,6 +4,11 @@ package com.saahilmakes.coursepedia.main.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
 @Document(collection = "User")
 public class UserModel {
 
@@ -59,8 +64,16 @@ public class UserModel {
     }
 
     private String name;
+
+    @Min(1)
+    @Max(100)
     private int age;
+
+    @Email(message = "Invalid Email")
+    @NotEmpty(message = "Email cannot be Empty")
     private String email;
+
+    @NotEmpty(message = "Password cannot be Empty")
     private String password;
     private int phone;
 
