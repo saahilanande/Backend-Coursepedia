@@ -1,7 +1,9 @@
 package com.saahilmakes.coursepedia.main.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "Tracker")
 public class CourseTrackerModel {
     @Id
     private String id;
