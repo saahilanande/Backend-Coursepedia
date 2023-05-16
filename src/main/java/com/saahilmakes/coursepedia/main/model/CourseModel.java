@@ -3,12 +3,15 @@ package com.saahilmakes.coursepedia.main.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
+
 @Document(collection = "Course")
 public class CourseModel {
 
     @Id
     private String id;
 
+    @NotEmpty(message = "Name cannot be Empty")
     private String name;
 
     private String description;
@@ -83,7 +86,9 @@ public class CourseModel {
 
     private String difficulty;
 
+    @NotEmpty(message = "Type cannot be Empty")
     private String type;
 
+    @NotEmpty(message = "Category cannot be Empty")
     private String category;
 }
