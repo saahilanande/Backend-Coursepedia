@@ -3,6 +3,9 @@ package com.saahilmakes.coursepedia.main.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 @Document(collection = "Tracker")
 public class CourseTrackerModel {
     @Id
@@ -32,7 +35,9 @@ public class CourseTrackerModel {
         this.user_id = user_id;
     }
 
+    @NotEmpty
     private String course_id;
 
+    @NotBlank
     private String user_id;
 }

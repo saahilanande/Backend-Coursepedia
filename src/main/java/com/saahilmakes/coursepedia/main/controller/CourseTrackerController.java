@@ -3,10 +3,12 @@ package com.saahilmakes.coursepedia.main.controller;
 import com.saahilmakes.coursepedia.main.model.CourseTrackerModel;
 import com.saahilmakes.coursepedia.main.repository.CourseTrackerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/tracker")
 public class CourseTrackerController {
