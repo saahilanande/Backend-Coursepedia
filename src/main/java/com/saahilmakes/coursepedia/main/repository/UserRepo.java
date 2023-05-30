@@ -17,5 +17,5 @@ public interface UserRepo extends MongoRepository<UserModel, String> {
     UserModel validateUser(String email, String password);
 
     @Query("{'email':?0}")
-    UserModel findUsername(String email);
+    UserModel findByEmail(String email);
 }

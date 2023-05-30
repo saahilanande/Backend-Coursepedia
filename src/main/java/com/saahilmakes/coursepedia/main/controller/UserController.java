@@ -4,6 +4,9 @@ package com.saahilmakes.coursepedia.main.controller;
 import com.saahilmakes.coursepedia.main.model.UserModel;
 import com.saahilmakes.coursepedia.main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +23,9 @@ public class UserController {
 
     @Autowired
     UserRepo userInterface;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
 
     //Endpoint to get all the users
@@ -60,12 +66,20 @@ public class UserController {
     @GetMapping("/validateUser/{email}/{password}")
     public String validateUser(@PathVariable("email") @NotBlank @Email String email, @PathVariable("password") @NotBlank String password) {
 
-        UserModel validUser = userInterface.validateUser(email, password);
-        if (validUser == null) {
-            return "User is invalid";
-        } else {
-            return "User is Valid";
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        } catch (BadCredentialsException ex) {
+
+            return "" + ex;
+
         }
+        return "User is Valid";
+//        UserModel validUser = userInterface.validateUser(email, password);
+//        if (validUser == null) {
+//            return "User is invalid";
+//        } else {
+//            return "User is Valid";
+//        }
     }
 
     //Endpoint to update a particular user with Id
