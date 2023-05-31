@@ -70,7 +70,7 @@ public class UserController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (BadCredentialsException ex) {
 
-            return "Invalid User" + ex;
+            return "Invalid User";
 
         }
         return "User is Valid";
