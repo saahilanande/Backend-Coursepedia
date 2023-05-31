@@ -2,12 +2,11 @@ package com.saahilmakes.coursepedia.main.controller;
 
 import com.saahilmakes.coursepedia.main.model.CourseModel;
 import com.saahilmakes.coursepedia.main.repository.CourseRepo;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Validated
