@@ -70,16 +70,10 @@ public class UserController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (BadCredentialsException ex) {
 
-            return "" + ex;
+            return "Invalid User" + ex;
 
         }
         return "User is Valid";
-//        UserModel validUser = userInterface.validateUser(email, password);
-//        if (validUser == null) {
-//            return "User is invalid";
-//        } else {
-//            return "User is Valid";
-//        }
     }
 
     //Endpoint to update a particular user with Id
