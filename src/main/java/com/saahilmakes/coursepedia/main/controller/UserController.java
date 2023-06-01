@@ -3,17 +3,23 @@ package com.saahilmakes.coursepedia.main.controller;
 
 import com.saahilmakes.coursepedia.main.model.UserModel;
 import com.saahilmakes.coursepedia.main.repository.UserRepo;
+import com.saahilmakes.coursepedia.main.service.TokenService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Validated
 @RestController
@@ -26,9 +32,15 @@ public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    private final TokenService tokenService;
+
+    public UserController(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
+
 
     //Endpoint to get all the users
-    @GetMapping("")
+    @GetMapping("/")
     public List<UserModel> getAllUser(@RequestParam(value = "id", required = false) String userId) {
 
         if (userId == null) {
@@ -63,16 +75,21 @@ public class UserController {
 
     //Endpoint to Validate a user and assign token
     @GetMapping("/validateUser/{email}/{password}")
-    public String validateUser(@PathVariable("email") @NotBlank @Email String email, @PathVariable("password") @NotBlank String password) {
+    public ResponseEntity<Object> validateUser(@PathVariable("email") @NotBlank @Email String email, @PathVariable("password") @NotBlank String password) {
 
+        Map<String, String> data;
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+            String token = tokenService.generateToken(email);// Signing and generating a JWT token
+            data = new HashMap<>();
+            data.put("Email", email);
+            data.put("Jwt", token);
         } catch (BadCredentialsException ex) {
 
-            return "Invalid User";
+            return new ResponseEntity<>("Invalid User", HttpStatus.FORBIDDEN);
 
         }
-        return "User is Valid";
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     //Endpoint to update a particular user with Id
