@@ -28,7 +28,7 @@ public class UserController {
 
 
     //Endpoint to get all the users
-    @GetMapping("")
+    @GetMapping("/")
     public List<UserModel> getAllUser(@RequestParam(value = "id", required = false) String userId) {
 
         if (userId == null) {
