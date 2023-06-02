@@ -1,4 +1,5 @@
 package com.saahilmakes.coursepedia.main.model;
+
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,6 +18,11 @@ public class CourseModel {
     private String video;
 
     private String link;
+    private String difficulty;
+    @NotEmpty(message = "Type cannot be Empty")
+    private String type;
+    @NotEmpty(message = "Category cannot be Empty")
+    private String category;
 
     public String getId() {
         return id;
@@ -81,12 +87,4 @@ public class CourseModel {
     public void setCategory(String category) {
         this.category = category;
     }
-
-    private String difficulty;
-
-    @NotEmpty(message = "Type cannot be Empty")
-    private String type;
-
-    @NotEmpty(message = "Category cannot be Empty")
-    private String category;
 }

@@ -2,7 +2,6 @@ package com.saahilmakes.coursepedia.main.service;
 
 import com.saahilmakes.coursepedia.main.model.UserModel;
 import com.saahilmakes.coursepedia.main.repository.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,14 +13,18 @@ import java.util.ArrayList;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    UserRepo userRepo;
+    private final UserRepo userRepo;
+
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         UserModel userFound = userRepo.findByEmail(s);
-        if(userFound == null){
+        if (userFound == null) {
             return null;
         }
-        return new User(userFound.getName(),userFound.getPassword(),new ArrayList<>());
+        return new User(userFound.getName(), userFound.getPassword(), new ArrayList<>());
     }
 }

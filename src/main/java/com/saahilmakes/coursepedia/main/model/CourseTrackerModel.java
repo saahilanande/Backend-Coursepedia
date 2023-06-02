@@ -9,6 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class CourseTrackerModel {
     @Id
     private String id;
+    @NotEmpty
+    private String course_id;
+    @NotBlank
+    private String user_id;
 
     public String getId() {
         return id;
@@ -33,10 +37,4 @@ public class CourseTrackerModel {
     public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
-
-    @NotEmpty
-    private String course_id;
-
-    @NotBlank
-    private String user_id;
 }

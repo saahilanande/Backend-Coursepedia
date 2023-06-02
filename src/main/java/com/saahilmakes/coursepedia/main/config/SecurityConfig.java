@@ -2,7 +2,6 @@ package com.saahilmakes.coursepedia.main.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.saahilmakes.coursepedia.main.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,11 +28,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserService userService;
 
+    private final UserService userService;
     @Value("${jwt.key}")
     private String jwtKey;
+
+    public SecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
     @Bean
     public AuthenticationManager customAuthenticationManager(HttpSecurity http) throws Exception {
@@ -53,7 +55,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/user/validateUser/**","/user/adduser/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/user/validateUser/**", "/user/adduser/**").permitAll().anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .httpBasic(withDefaults())
@@ -68,7 +70,7 @@ public class SecurityConfig {
     @Bean
     public JwtDecoder jwtDecoder() {
         byte[] bytes = jwtKey.getBytes();
-        SecretKeySpec originalKey = new SecretKeySpec(bytes, 0, bytes.length,"RSA");
+        SecretKeySpec originalKey = new SecretKeySpec(bytes, 0, bytes.length, "RSA");
         return NimbusJwtDecoder.withSecretKey(originalKey).macAlgorithm(MacAlgorithm.HS512).build();
     }
 

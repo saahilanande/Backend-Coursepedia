@@ -7,11 +7,22 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 @Document(collection = "User")
 public class UserModel {
 
     @Id
     private String id;
+    private String name;
+    @Min(1)
+    @Max(100)
+    private int age;
+    @Email(message = "Invalid Email")
+    @NotEmpty(message = "Email cannot be Empty")
+    private String email;
+    @NotEmpty(message = "Password cannot be Empty")
+    private String password;
+    private int phone;
 
     public String getId() {
         return id;
@@ -60,19 +71,5 @@ public class UserModel {
     public void setPhone(int phone) {
         this.phone = phone;
     }
-
-    private String name;
-
-    @Min(1)
-    @Max(100)
-    private int age;
-
-    @Email(message = "Invalid Email")
-    @NotEmpty(message = "Email cannot be Empty")
-    private String email;
-
-    @NotEmpty(message = "Password cannot be Empty")
-    private String password;
-    private int phone;
 
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
     @RequestMapping("/")
-    public String baseUrl(){
+    public String baseUrl() {
 
         return "Coursepedia on Springboot";
 

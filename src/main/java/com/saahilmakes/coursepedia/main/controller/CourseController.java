@@ -4,9 +4,9 @@ import com.saahilmakes.coursepedia.main.model.CourseModel;
 import com.saahilmakes.coursepedia.main.repository.CourseRepo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Validated
@@ -14,8 +14,11 @@ import java.util.List;
 @RequestMapping("/course")
 public class CourseController {
 
-    @Autowired
-    CourseRepo courseInterface;
+    private final CourseRepo courseRepo;
+
+    public CourseController(CourseRepo courseRepo) {
+        this.courseRepo = courseRepo;
+    }
 
     //Endpoint to add a new course
     @PostMapping("/addcourse")
@@ -30,7 +33,7 @@ public class CourseController {
         newCourse.setCategory(reqcourse.getCategory());
         newCourse.setVideo(reqcourse.getVideo());
 
-        courseInterface.insert(newCourse);
+        courseRepo.insert(newCourse);
 
         return newCourse;
     }
@@ -38,7 +41,7 @@ public class CourseController {
     //Endpoint to get All courses
     @GetMapping("")
     public List<CourseModel> getAllproducts() {
-        List<CourseModel> courses = courseInterface.findAll();
+        List<CourseModel> courses = courseRepo.findAll();
         return courses;
     }
 
@@ -46,7 +49,7 @@ public class CourseController {
     @GetMapping("/delete/{id}")
     public String deletecourse(@PathVariable("id") @NotEmpty String id) {
         try {
-            courseInterface.deleteById(id);
+            courseRepo.deleteById(id);
             return "Course deleted Succesfully with ID" + id;
         } catch (Exception ex) {
             return "" + ex;

@@ -1,6 +1,5 @@
 package com.saahilmakes.coursepedia.main.service;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -15,7 +14,6 @@ import java.time.temporal.ChronoUnit;
 public class TokenService {
 
     private final JwtEncoder encoder;
-
 
     public TokenService(JwtEncoder encoder) {
         this.encoder = encoder;
