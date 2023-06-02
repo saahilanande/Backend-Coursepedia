@@ -7,7 +7,6 @@ import com.saahilmakes.coursepedia.main.service.TokenService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,15 +25,15 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
-    UserRepo userInterface;
+    private final UserRepo userRepo;
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     private final TokenService tokenService;
 
-    public UserController(TokenService tokenService) {
+    public UserController(UserRepo userRepo, AuthenticationManager authenticationManager, TokenService tokenService) {
+        this.userRepo = userRepo;
+        this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
     }
 
@@ -44,10 +43,10 @@ public class UserController {
     public List<UserModel> getAllUser(@RequestParam(value = "id", required = false) String userId) {
 
         if (userId == null) {
-            List<UserModel> userList = userInterface.findAll();
+            List<UserModel> userList = userRepo.findAll();
             return userList;
         } else {
-            List<UserModel> userList = userInterface.findByQueryId(userId);
+            List<UserModel> userList = userRepo.findByQueryId(userId);
             return userList;
         }
     }
@@ -64,7 +63,7 @@ public class UserController {
             newUser.setPassword(newuserModel.getPassword());
             newUser.setPhone(newuserModel.getPhone());
 
-            userInterface.insert(newUser);
+            userRepo.insert(newUser);
 
             return newUser;
         } catch (Exception ex) {
@@ -103,7 +102,7 @@ public class UserController {
             updateuser.setAge(user.getAge());
             updateuser.setEmail(user.getEmail());
             updateuser.setPassword(user.getPassword());
-            userInterface.save(updateuser);
+            userRepo.save(updateuser);
             return "Updated Succesfully";
         } catch (Exception ex) {
             return "Error: " + ex;
@@ -114,7 +113,7 @@ public class UserController {
     @DeleteMapping("/delete/{userId}")
     public String deleteUser(@PathVariable("userId") @NotBlank String userId) {
         try {
-            userInterface.deleteById(userId);
+            userRepo.deleteById(userId);
             return "Deleted a user with UserId:" + userId;
         } catch (Exception ex) {
             return "Error: " + ex;
